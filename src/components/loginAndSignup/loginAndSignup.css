@@ -1,0 +1,235 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    line-height: normal;
+    font-style: normal;
+    font-family: Quicksand;
+}
+  
+button{
+    cursor: pointer !important;
+}
+
+.loginAndSignupMianCon{
+    display: flex;
+    justify-content:space-around;
+    align-items:center;
+    width: 100%;
+    background: linear-gradient(180deg, #CCE5FF 0%, #B7CBFF 84.79%, #C3D0FF 100%);
+    height: 100vh;
+    padding:2%;
+}
+
+.loginLeftSideCon{
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.loginLeftSideCon svg{
+    width: auto;
+    height: 300px;
+}
+
+
+.loginRightSideCon{
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 0px 19px 40px 0px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    max-width: 598px !important;
+    padding: 2%;
+}
+
+.loginRightSideCon h3{
+    color: #004B96;
+    
+    font-size: 42px;
+    font-weight: 700;
+    text-align: left;
+}
+
+.loginRightSideCon p{
+    color: #000;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    text-align: left;
+}
+
+.loginRightSideCon h2{
+    color: #0575E6;
+    font-size: 40px;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.loginInputContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 2%;
+    max-width: 493px;
+}
+
+.loginInputFieldLable{
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.loginInputField{
+    width: 100%;
+    border-radius: 8px;
+    border: 0.8px solid #406C99;
+    background: #FFF;
+    color: #000;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 8px;
+}
+
+.errorClass{
+    border: 1.5px solid #F00;
+}
+
+.loginButtonMainCon{
+    width: 100%;
+}
+
+.loginButtonClass{
+    width: 100%;
+    border-radius: 10px;
+    background: #0575E6;
+
+    color: #FFF;
+    font-size: 22px;
+    font-weight: 700;
+    border: none;
+    padding: 10px;
+    max-width: 274px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.loginPageBottomText{
+    color: #000;
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0.69px;
+    align-self: center;
+}
+
+.loginPageBottomText span{
+    color: #0575E6;
+    font-size: 23px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0.69px;
+    cursor: pointer;
+}
+
+
+.loginButtonClass,
+.loginInputField:focus{
+    outline: none;
+}
+
+
+/* TABS */
+
+@media only screen and (min-width: 600px) and (max-width: 1280px) {
+    .loginRightSideCon h3{
+        font-size: 30px;
+    }
+    
+    .loginRightSideCon p{
+        font-size: 24px;
+    }
+    
+    .loginRightSideCon h2{
+        font-size: 28px;
+    }
+
+    .loginInputFieldLable{
+        font-size: 18px !important;
+    }
+    
+    .loginInputField{
+        font-size: 20px;
+        padding: 7px;
+    }
+
+    .loginButtonClass{
+        font-size: 18px;
+        padding: 7px;
+        max-width: 180px;
+    }
+    
+    .loginPageBottomText{
+        font-size: 16px !important;
+    }
+    
+    .loginPageBottomText span{
+        font-size: 16px !important;
+    }
+
+    .loginInputContainer{
+        gap: 6px !important;
+    }
+}
+
+/* MOBILES */
+
+@media only screen and (max-width: 600px) {
+    .loginRightSideCon h3{
+        font-size: 24px;
+    }
+    
+    .loginRightSideCon p{
+        font-size: 18px;
+    }
+    
+    .loginRightSideCon h2{
+        font-size: 20px;
+    }
+
+    .loginInputFieldLable{
+        font-size: 16px !important;
+    }
+    
+    .loginInputField{
+        font-size: 18px;
+        padding: 4px;
+    }
+
+    .loginButtonClass{
+        font-size: 16px;
+        padding: 5px;
+        max-width: 274px;
+    }
+    
+    .loginPageBottomText{
+        font-size: 16px;
+    }
+    
+    .loginPageBottomText span{
+        font-size: 16px;
+    }
+
+    .loginInputContainer{
+        gap: 8px;
+    }
+}
