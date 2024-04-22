@@ -162,6 +162,14 @@
     background: rgb(187, 187, 187); 
   }
 
+.popupInputFieldLable{
+    color: #213D58;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
 @media only screen and (min-width: 600px) and (max-width: 1280px) {
     .popupinnerPopupCon{
         padding: 1%;

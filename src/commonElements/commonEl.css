@@ -1,0 +1,83 @@
+.cgDropDownContainer{
+    border-radius: 8px;
+    border: 0.8px solid #406C99;
+    background: #FFF;
+    display: flex;
+    flex-direction: column;
+    padding:13px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-bottom:20px;
+    align-self: flex-start;
+}
+
+.dropdownInputFieldCon{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+}
+
+
+.dropdownItem{
+    display: flex;
+    justify-content:flex-start;
+    align-items:center;
+    width:100%;
+    gap: 14px;
+    cursor: pointer;
+}
+
+.dropdownInputClassName{
+    color: #000;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 400;
+    border: none;
+    border-radius:10px;
+    
+}
+
+.dropdownArrowClass{
+    cursor: pointer;
+    width: 25px;
+    height: 13px;
+    transition-duration: 0.5s;
+}
+
+.dropdowmHrLineClass{
+    height: 1px;
+    width: 100%;
+    border-bottom: 1px solid #808080;
+    margin-top: 13px;
+    margin-bottom:13px;
+}
+
+.dropdownItemsCon{
+    display: flex;
+    justify-content:flex-start;
+    align-items:center;
+    flex-direction: column;
+    width:100%;
+    
+}
+
+
+
+.dropdownRadioClass{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.dropdownClassLable{
+    color: #000;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.dropdownInputClassName:focus{
+    outline: none;
+}
