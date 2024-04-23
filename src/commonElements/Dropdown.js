@@ -47,7 +47,7 @@ const Dropdown = ({inputId, placeholder, error, array,
                 </span>
             </div>
 
-            <hr className="dropdowmHrLineClass" id={`dropdown_hrline_${inputId}`} />
+            <hr className="dropdowmHrLineClass" id={`dropdown_hrline_${inputId}`} style={{display: 'none'}} />
 
             <div className="dropdownItemsCon" id={`dropdown_con_${inputId}`} style={{display: 'none'}}>
                 {array && array.length && array.length > 0 &&
@@ -60,7 +60,7 @@ const Dropdown = ({inputId, placeholder, error, array,
                                 value={value}
                                 className='dropdownRadioClass'
                                 name={`dropdown_`}
-                                onChange={(e)=>onChange(e, name, eachItem)}
+                                onChange={(e)=>{onChange(e, name, eachItem); onInputClick()}}
                             />
         
                             <label className='dropdownClassLable' htmlFor={`dropdown_${index}_${inputId}`}>{eachItem.title}</label>

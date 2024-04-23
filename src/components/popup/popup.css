@@ -87,6 +87,7 @@
     align-items:center;
     width: 100%;
     flex-direction: column;
+    max-width: 457px;
 }
 
 .groupPopupDetailsClass{
@@ -152,7 +153,7 @@
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: rgb(195, 194, 194); 
+    background: #406C99; 
     border-radius: 10px;
     cursor: pointer;
   }
@@ -168,6 +169,151 @@
     font-size: 24px;
     font-weight: 600;
     align-self: flex-start;
+}
+
+.popupDetailsmiddleCon{
+    /* max-width: 457px; */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.chartTopFieldsCon{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 27px;
+    margin-bottom :27px;
+}
+
+.chartTotalPrice{
+    border-radius: 6px;
+    border: 1px solid #0575E6;
+    background: #FCFCFC;
+    color: #3F3636;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 600;
+    padding: 2px;
+}
+
+.chartTotalPrice span{
+    color: #0575E6;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.monthsDropdown{
+    border-radius: 6px;
+    border: none;
+    border-bottom: 1px solid #0575E6;
+    background: #FCFCFC;
+    height: 40px;
+    width: 172px;
+
+    color: #3F3636;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 400;
+   
+}
+
+.monthsDropdown:focus{
+    outline: none;
+}
+
+.chartTableMainCon{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.chartTableHeaderCon{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #EBF5FF;
+}
+
+.chartHearder{
+    color: #0575E6;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: left;
+    
+}
+
+.chartTableRowsMainCon{
+    border-top: 1px solid #0575E6;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    padding-top: 15px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.chartTableRow{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.chartColumn{
+    color: #242424;
+    font-family: Quicksand;
+    font-size: 26px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.snoBox{
+    width: 15%;
+    padding: 5px;
+}
+
+.dateBox{
+    width: 35%;
+}
+
+.spentBox{
+    width: 25%;
+}
+
+.amountBox{
+    width: 20%;
+}
+
+.chartPriceCrad{
+    flex-direction: row;
+    gap:5px
+}
+
+.setteleBtnBtnClass{
+    border: none;
+    background-color: transparent;
+    color: #0575E6;
+    font-family: Quicksand;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration-line: underline;
+}
+
+.priceCardLeftCard{
+    align-self: flex-start;
+    margin-right: auto;
+    margin-left: 14px;
 }
 
 @media only screen and (min-width: 600px) and (max-width: 1280px) {

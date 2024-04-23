@@ -13,6 +13,11 @@ const Home = () => {
     const [expanseDetails, setExpanseDetails] = useState({});
     const [errorList, setErrorList] = useState([]);
     const [currentPopup, setCurrentPopup] = useState("");
+    const [groupDetails, setGroupDetails] = useState([]);
+    const [chartType, setChartType] = useState("");
+
+    const [chartDetails, setChartDetails] = useState({});
+
 
     const removeErrorIds = (name) =>{
         let errorIds=[...errorList];
@@ -48,11 +53,18 @@ const Home = () => {
     };
 
     
-    const onButtonClick = (e, identifier, index) => {
+    const onButtonClick = (e, identifier, index, data) => {
         if(identifier == undefined){
             setCurrentPopup(e.target.name);  
             setIsPopup(true);
+            setChartType(e.target.name);
         };
+
+        setChartDetails({});
+
+        if(e.target.name == "groupDetails"){
+            setChartDetails(data);
+        }
 
         let errorIds=[...errorList];
 
@@ -63,16 +75,20 @@ const Home = () => {
                     break;
                 case 'expenseChart':
                     console.log("Expense Chart")
+                    
                     break;
                 case 'createGroup':
                     if(!isNull(expanseDetails, "groupName")){
                         errorIds.push("groupName");
                     }
 
-            
-
                     if(isNull(expanseDetails, "groupName") && isNull(expanseDetails, "groupMembers")){
                         console.log("Create Group", expanseDetails);
+                        let prevArray = [...groupDetails];
+                        prevArray.push(expanseDetails);
+                        setGroupDetails(prevArray);
+                        setExpanseDetails({});
+                        setIsPopup(false);
                     }
                     break;
                 case 'addNewMember':
@@ -82,6 +98,7 @@ const Home = () => {
                         newList.push(newMemberEl.value);
                         onValueChange(undefined, "groupMembers", newList);
                         newMemberEl.value = "";
+                        
                     }else{
                         errorIds.push("newMember");
                     }
@@ -101,8 +118,8 @@ const Home = () => {
 
     }
 
-    let dummyGroup = [0,1,2,3,4,5,6,7,8,9,10,11];
     let count = 0;
+    let reversedArray = [...groupDetails].reverse();
 
     return (
         <div className="homeMainContainer">
@@ -120,13 +137,15 @@ const Home = () => {
                     />
                     }
 
-                    {currentPopup === "expenseChart" &&
+                    {(currentPopup === "expenseChart" || currentPopup === "groupDetails") &&
                     <ExpenseChart
                         errorList={errorList}
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
                         setIsPopup={setIsPopup}
+                        chartType={chartType}
+                        chartDetails={chartDetails}
                     />
                     }
 
@@ -215,22 +234,24 @@ const Home = () => {
 
                     <hr className="priceDetailshrLine" />
 
-                    <div className="groupFolderCard">
+{/* New Group */}
+                    {/* <div className="groupFolderCard">
                         <div className="groupProfileCon">
                             {handMoneySvg}
                         </div>
                         <p className="expanseGroupName">Hello Friends <span>(New Group)</span></p>
-                    </div>
+                    </div> */}
 
+{/* Groups Displaying */}
                     <div className="groupFolderCardsDisplayMainCon">
-                    {dummyGroup.map((eachItem, index)=>{
+                    {reversedArray.map((eachItem, index)=>{
                         count = count + 1
                         var colors = groupColors.get(count);
                         if(count > 4){
                             count = 0;
                         };
                         return(
-                            <div key={index} className="groupFolderCard">
+                            <div key={index} id={`group_${index}`} onClick={(e)=>onButtonClick({target: {name: "groupDetails"}}, undefined, undefined, eachItem )} className="groupFolderCard">
                                 <div 
                                     style={{
                                         backgroundColor: colors && colors.backgroundColor ? colors.backgroundColor : "",
@@ -241,7 +262,7 @@ const Home = () => {
                                     {handMoneySvg}
                                 </div>
                                 <div className="expanseGroupPriceTextCon">
-                                    <p className="expanseGroupName">Hello Friends</p>
+                                    <p className="expanseGroupName">{eachItem.groupName}</p>
                                     <p className="expanseGroupPriceText">you are owe <span>₹ 300</span></p>
                                 </div>
                             </div>

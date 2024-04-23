@@ -23,65 +23,67 @@ const AddExpense = ({onValueChange, errorList, onButtonClick, setIsPopup, expans
                     </span>
                 </div>
 
-                <div className='popupDetailsClass'>
-                <InputField
-                    key="amount"
-                    inputId = "name"
-                    required={true}
-                    inputType="text"
-                    name="name"
-                    placeholder="Enter Amount"
-                    labelName="Amount"
-                    labelClassName="popupInputFieldLable"
-                    inputClassName={`loginInputField ${errorList.includes("amount") ? "errorClass" : ""}`}
-                    containerClass="loginInputContainer"
-                    value={expanseDetails.amount != undefined ? expanseDetails.amount : ""}
-                    onChange={onValueChange}
-                />
+                <div className='popupDetailsmiddleCon'>
+                    <div className='popupDetailsClass '>
+                    <InputField
+                        key="amount"
+                        inputId = "name"
+                        required={true}
+                        inputType="text"
+                        name="name"
+                        placeholder="Enter Amount"
+                        labelName="Amount"
+                        labelClassName="popupInputFieldLable"
+                        inputClassName={`loginInputField ${errorList.includes("amount") ? "errorClass" : ""}`}
+                        containerClass="loginInputContainer"
+                        value={expanseDetails.amount != undefined ? expanseDetails.amount : ""}
+                        onChange={onValueChange}
+                    />
 
-                <label className="popupInputFieldLable">Select the category of your expense</label>
+                    <label className="popupInputFieldLable">Select the category of your expense</label>
 
-                <Dropdown 
-                    key="category"
-                    inputId = "category"
-                    required={true}
-                    name="category"
-                    placeholder="Select Category"
-                    error={errorList.includes("category") ? "errorClass" : ""}
-                    mainContainerClass="cgDropDownContainer"
-                    value={expanseDetails.category != undefined ? expanseDetails.category : ""}
-                    onChange={onDropChange}
-                    array={allCategory}
-                />
+                    <Dropdown 
+                        key="category"
+                        inputId = "category"
+                        required={true}
+                        name="category"
+                        placeholder="Select Category"
+                        error={errorList.includes("category") ? "errorClass" : ""}
+                        mainContainerClass="cgDropDownContainer"
+                        value={expanseDetails.category != undefined ? expanseDetails.category : ""}
+                        onChange={onDropChange}
+                        array={allCategory}
+                    />
 
-                {expanseDetails.category != undefined && expanseDetails.category == "others" && 
-                <InputField
-                    key="cgName"
-                    inputId = "cgName"
-                    required={true}
-                    inputType="text"
-                    name="cgName"
-                    placeholder="Enter Name"
-                    labelName="Add Expense Name"
-                    labelClassName="popupInputFieldLable"
-                    inputClassName={`loginInputField ${errorList.includes("cgName") ? "errorClass" : ""}`}
-                    containerClass="loginInputContainer"
-                    value={expanseDetails.cgName != undefined ? expanseDetails.cgName : ""}
-                    onChange={onValueChange}
-                />
-                }
+                    {expanseDetails.category != undefined && expanseDetails.category == "others" && 
+                    <InputField
+                        key="cgName"
+                        inputId = "cgName"
+                        required={true}
+                        inputType="text"
+                        name="cgName"
+                        placeholder="Enter Name"
+                        labelName="Add Expense Name"
+                        labelClassName="popupInputFieldLable"
+                        inputClassName={`loginInputField ${errorList.includes("cgName") ? "errorClass" : ""}`}
+                        containerClass="loginInputContainer"
+                        value={expanseDetails.cgName != undefined ? expanseDetails.cgName : ""}
+                        onChange={onValueChange}
+                    />
+                    }
 
 
-                <Button
-                            key="addExpenseBtn_"
-                            buttonId ="addExpense_"
-                            buttonConClassName="addExpenseBtnCon"
-                            buttonClassName="addExpenseBtnClass"
-                            onSubmit={(e)=>onButtonClick(e, "addExpense")}
-                            title="Add Expense"
-                            name="addExpense"
-                            icon={cashIcon}
-                />
+                    <Button
+                                key="addExpenseBtn_"
+                                buttonId ="addExpense_"
+                                buttonConClassName="addExpenseBtnCon"
+                                buttonClassName="addExpenseBtnClass"
+                                onSubmit={(e)=>onButtonClick(e, "addExpense")}
+                                title="Add Expense"
+                                name="addExpense"
+                                icon={cashIcon}
+                    />
+                    </div>
                 </div>
             </div>
         </div>

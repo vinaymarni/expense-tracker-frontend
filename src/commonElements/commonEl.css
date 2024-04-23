@@ -9,6 +9,7 @@
     padding-bottom: 6px;
     margin-bottom:20px;
     align-self: flex-start;
+    margin-top: 5px;
 }
 
 .dropdownInputFieldCon{
@@ -26,6 +27,13 @@
     width:100%;
     gap: 14px;
     cursor: pointer;
+    transition-duration: 0.5s;
+}
+
+.dropdownItem:hover{
+    background-color:#BEDEFF;
+    padding-left: 3px;
+    border-radius: 15px;
 }
 
 .dropdownInputClassName{
