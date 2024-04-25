@@ -60,21 +60,30 @@ const Home = () => {
             setChartType(e.target.name);
         };
 
-        setChartDetails({});
-
         if(e.target.name == "groupDetails"){
             setChartDetails(data);
         }
 
         let errorIds=[...errorList];
 
+        let currentDate = new Date().toJSON();
+        // new Date().toJSON().slice(0, 10);
+
         if(identifier){
             switch (identifier) {
                 case 'addExpense':
-                    console.log("Add Expense")
+
+                    expanseDetails.paymentDate = currentDate;
+                    console.log(expanseDetails);
+
+                   //clear prev details
+                   setExpanseDetails({});
+                   // Close popup
+                   setIsPopup(false);
+                    
                     break;
                 case 'expenseChart':
-                    console.log("Expense Chart")
+                    console.log("Expense Chart");
                     
                     break;
                 case 'createGroup':
@@ -87,7 +96,9 @@ const Home = () => {
                         let prevArray = [...groupDetails];
                         prevArray.push(expanseDetails);
                         setGroupDetails(prevArray);
+                        //clear prev details
                         setExpanseDetails({});
+                        // Close popup
                         setIsPopup(false);
                     }
                     break;
@@ -129,6 +140,7 @@ const Home = () => {
 
                     {currentPopup === "addExpense" &&
                     <AddExpense
+                        key="addExpense"
                         errorList={errorList}
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 

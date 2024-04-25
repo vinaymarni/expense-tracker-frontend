@@ -326,15 +326,43 @@
     }
 
     .popupHeadercon p{
-        font-size: 28px;
+        font-size: 26px;
     }
     
     .popupHeadercon svg{
         cursor: pointer;
-        width: 32px;
-        height: 32px;
+        width: 26px;
+        height: 26px;
     }
+    .popupInputFieldLable{
+        text-align: left;
+        font-size: 18px;
+    }
+    
 }
 
 @media only screen and (max-width: 600px) {
+    .popupinnerPopupCon{
+        padding: 1%;
+    }
+
+
+    .popupHeadercon{
+        padding-bottom: 5px;
+    }
+
+    .popupHeadercon p{
+        font-size: 26px;
+    }
+    
+    .popupHeadercon svg{
+        cursor: pointer;
+        width: 26px;
+        height: 26px;
+    }
+
+    .popupInputFieldLable{
+        text-align: left;
+        font-size: 16px;
+    }
 }
