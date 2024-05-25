@@ -4,6 +4,7 @@ import InputField from '../../commonElements/InputField';
 import Button from '../../commonElements/Button';
 import { eyeIcon, loginPageSvg } from '../../commonElements/commonSvgs';
 import { isNull } from '../../commonElements/commonData';
+import { userRegistration } from '../../apis';
 
 const LoginAndSignup = ({setIsLogin}) => {
     const [isSignPage, setIsSignPage] = useState(false);
@@ -61,7 +62,10 @@ const LoginAndSignup = ({setIsLogin}) => {
                 console.log(userDetails, e.target.name);
 
                 //If API call Success
-                setIsLogin(prev => !prev)
+                if(userRegistration(userDetails) === true){
+                    setIsLogin(prev => !prev)
+                }
+                
             }
 
         }else{
