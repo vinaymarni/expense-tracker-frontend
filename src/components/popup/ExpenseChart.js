@@ -6,37 +6,41 @@ import './popup.css'
 
 let dummyArray = [0,1,2,3,4,5,6,7,8,9];
 
-const ExpenseChart = ({onValueChange, errorList, onButtonClick, setIsPopup, chartType, chartDetails }) => {
+const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chartDetails, constantList }) => {
+
+    let monthsList = constantList.filter(each=>each.constType === "month");
+    let ExpenseList = constantList.filter(each=>each.constType === "Expense");
 
     return (
         <div className="popupStaticCon">
             <div className="popupinnerPopupCon">
                 <div className='popupHeadercon'>
                     <p>{chartDetails != undefined && chartDetails.groupName ? chartDetails.groupName : "Expense Chart"}</p>
-                    <span onClick={()=>setIsPopup(false)}>
+                    <span onClick={()=>onButtonClick(undefined, "close")}>
                         {crossIcon}
                     </span>
                 </div>
 
-                
                 <div className='chartTopFieldsCon'>
                     <p className="chartTotalPrice">Total Spent : <span>₹45 000</span></p>
 
-
-                    <select name="cars" className="monthsDropdown" id="months">
-                        <option value="thisMnt">This Month</option>
-
+                    <select name="months" className="monthsDropdown" id="months">
+                        {monthsList && monthsList.map((each, ind)=>{
+                            return(
+                                <option key={ind} value={each.constId}>{each.constName}</option>
+                            )
+                        })}
                     </select>
 
                     <Button
-                                key="addExpenseBtn_chart"
-                                buttonId ="addExpenseBtn_chart"
-                                buttonConClassName="addExpenseBtnCon"
-                                buttonClassName="addExpenseBtnClass"
-                                onSubmit={(e)=>onButtonClick(e)}
-                                title="Add Expense"
-                                name="addExpense"
-                                icon={""}
+                        key="addExpenseBtn_chart"
+                        buttonId ="addExpenseBtn_chart"
+                        buttonConClassName="addExpenseBtnCon"
+                        buttonClassName="addExpenseBtnClass"
+                        onSubmit={(e)=>onButtonClick(e)}
+                        title="Add Expense"
+                        name="addExpense"
+                        icon={""}
                     />
                 </div>
 
@@ -54,14 +58,14 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, setIsPopup, char
                         </div>
 
                         <Button
-                                key="setteleBtn"
-                                buttonId ="setteleBtn"
-                                buttonConClassName=""
-                                buttonClassName="setteleBtnBtnClass"
-                                onSubmit={(e)=>onButtonClick(e, "settleUp")}
-                                title="Settle Up"
-                                name="settleUp"
-                                icon={""}
+                            key="setteleBtn"
+                            buttonId ="setteleBtn"
+                            buttonConClassName=""
+                            buttonClassName="setteleBtnBtnClass"
+                            onSubmit={(e)=>onButtonClick(e, "settleUp")}
+                            title="Settle Up"
+                            name="settleUp"
+                            icon={""}
                         />
                 </div>
                 }

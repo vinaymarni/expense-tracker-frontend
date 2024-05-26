@@ -4,14 +4,13 @@ import InputField from '../../commonElements/InputField';
 import Button from '../../commonElements/Button';
 import { eyeIcon, loginPageSvg } from '../../commonElements/commonSvgs';
 import { isNull } from '../../commonElements/commonData';
-import { userRegistration } from '../../apis';
+import { userSignupAndLogin } from '../../apis';
 
 const LoginAndSignup = ({setIsLogin}) => {
     const [isSignPage, setIsSignPage] = useState(false);
     const [userDetails, setUserDetails] = useState({});
     const [errorList, setErrorList] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
-  
 
     const onValueChange = (e) => {
         let errorIds=[...errorList];
@@ -62,10 +61,11 @@ const LoginAndSignup = ({setIsLogin}) => {
                 console.log(userDetails, e.target.name);
 
                 //If API call Success
-                if(userRegistration(userDetails) === true){
-                    setIsLogin(prev => !prev)
-                }
-                
+                if(isSignPage){
+                    userSignupAndLogin(userDetails, setIsLogin, "signup");
+                }else{
+                    userSignupAndLogin(userDetails, setIsLogin, "login");
+                };
             }
 
         }else{
@@ -153,6 +153,8 @@ const LoginAndSignup = ({setIsLogin}) => {
                     icon={""}
                 />
 
+                <p id="loginErrorMsg" style={{display:"none"}} className="errorMessage"></p>
+            
             {!isSignPage ?
             <p className="loginPageBottomText">I don’t have an account ? <span onClick={(e)=>onButtonClick(e, "switch")}>Sign up</span></p>
             :

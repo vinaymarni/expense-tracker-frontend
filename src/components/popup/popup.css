@@ -42,6 +42,7 @@
     z-index: 3;
     overflow-x: hidden;
     padding: 2%;
+    max-width: 849px;
 }
 
 .popupHeadercon{
@@ -83,18 +84,15 @@
 
 .popupDetailsClass{
     display: flex;
-    justify-content: center;
-    align-items:center;
     width: 100%;
     flex-direction: column;
-    max-width: 457px;
 }
 
 .groupPopupDetailsClass{
     display: flex;
     justify-content: flex-start;
     align-items:flex-start;
-    width: 60%;
+    width: 80%;
     flex-direction: column;
     margin: auto;
     max-height: 80vh;
@@ -102,6 +100,7 @@
     margin-top: 10px;
     margin-bottom: 5px;
     padding-right: 5px;
+    max-width: 656px;
 }
 
 .createGroupBtn{
@@ -316,6 +315,19 @@
     margin-left: 14px;
 }
 
+.popupPriveAndDateCon{
+    display: flex;
+    gap: 30px;
+}
+
+.loginInputPriceCon{
+    max-width: 338px;
+}
+
+.loginInputDateCon{
+    max-width: 234px;
+}
+
 @media only screen and (min-width: 600px) and (max-width: 1280px) {
     .popupinnerPopupCon{
         padding: 1%;
@@ -337,6 +349,10 @@
     .popupInputFieldLable{
         text-align: left;
         font-size: 18px;
+    }
+
+    .popupPriveAndDateCon{
+        gap: 20px;
     }
     
 }
@@ -364,5 +380,10 @@
     .popupInputFieldLable{
         text-align: left;
         font-size: 16px;
+    }
+
+    .popupPriveAndDateCon{
+        gap: 0px;
+        flex-direction: column;
     }
 }

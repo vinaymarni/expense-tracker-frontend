@@ -1,12 +1,14 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './home.css'
 import Header from '../header/Header';
 import Button from '../../commonElements/Button';
 import { cashIcon, chartIcon, groupIcon, handMoneySvg } from '../../commonElements/commonSvgs';
-import { allCategory, groupColors, isNull } from '../../commonElements/commonData';
+import { allCategory, groupColors, isNull, isValueNull } from '../../commonElements/commonData';
 import AddExpense from '../popup/AddExpense';
 import CreateGroup from '../popup/CreateGroup';
 import ExpenseChart from '../popup/ExpenseChart';
+import { addExpanse, getConstantList } from '../../apis';
+import { addExpanseValidation } from '../../validations';
 
 const Home = () => {
     const [isPopup, setIsPopup] = useState(false);
@@ -17,6 +19,14 @@ const Home = () => {
     const [chartType, setChartType] = useState("");
 
     const [chartDetails, setChartDetails] = useState({});
+
+    const [constantList, setConstantList] = useState([]);
+
+    useEffect(() => {
+        if(constantList.length === 0){
+            getConstantList(setConstantList);
+        }
+    })
 
 
     const removeErrorIds = (name) =>{
@@ -47,20 +57,21 @@ const Home = () => {
 
         if(index != undefined){
             let prevList = [...expanseDetails.groupMembers];
-            prevList[index] = e.target.value;
+            let obj = prevList[index];
+            obj[e.target.name] = e.target.value;
             onValueChange(undefined, "groupMembers", prevList);
         }
     };
 
     
     const onButtonClick = (e, identifier, index, data) => {
-        if(identifier == undefined){
+        if(identifier == undefined && e !== undefined && e.target !== undefined && e.target.name !== undefined){
             setCurrentPopup(e.target.name);  
             setIsPopup(true);
             setChartType(e.target.name);
         };
 
-        if(e.target.name == "groupDetails"){
+        if(e !== undefined && e.target !== undefined && e.target.name !== undefined && e.target.name == "groupDetails" ){
             setChartDetails(data);
         }
 
@@ -73,17 +84,27 @@ const Home = () => {
             switch (identifier) {
                 case 'addExpense':
 
-                    expanseDetails.paymentDate = currentDate;
-                    console.log(expanseDetails);
+                    expanseDetails.expenseDate = new Date(expanseDetails.expenseDate).toJSON();;
+                    expanseDetails.isActive = "Y"
 
-                   //clear prev details
-                   setExpanseDetails({});
-                   // Close popup
-                   setIsPopup(false);
-                    
+                    //Api call
+                    if(addExpanseValidation(expanseDetails) == true){
+                        addExpanse(expanseDetails);
+
+                        //clear prev details
+                        setExpanseDetails({});
+
+                        // Close popup
+                        setIsPopup(false);
+                    }else{
+                        console.log("Fill all required Details")
+                    }           
+                        
                     break;
                 case 'expenseChart':
                     console.log("Expense Chart");
+                    console.log(expanseDetails);
+                    
                     
                     break;
                 case 'createGroup':
@@ -105,11 +126,23 @@ const Home = () => {
                 case 'addNewMember':
                     let newList = isNull(expanseDetails, "groupMembers") ? [...expanseDetails.groupMembers] : [];
                     let newMemberEl = document.getElementById('newMember');
-                    if(newMemberEl && newMemberEl.value){
-                        newList.push(newMemberEl.value);
+                    let newNumberEl = document.getElementById('newMemberNumber');
+                   
+                    if(isValueNull(newMemberEl) && isValueNull(newNumberEl)){
+                        let obj={
+                            name : newMemberEl.value,
+                            number: newNumberEl.value 
+                        };
+                        newList.push(obj);
                         onValueChange(undefined, "groupMembers", newList);
                         newMemberEl.value = "";
+                        newNumberEl.value = "";
                         
+                    }else if(!isValueNull(newMemberEl) && !isValueNull(newNumberEl)){
+                        errorIds.push("newMember");
+                        errorIds.push("newMemberNumber");
+                    }else if(isValueNull(newMemberEl) && !isValueNull(newNumberEl)){
+                        errorIds.push("newMemberNumber");
                     }else{
                         errorIds.push("newMember");
                     }
@@ -121,7 +154,13 @@ const Home = () => {
                     onValueChange(undefined, "groupMembers", prevList);
 
                     break;
-                    
+                case 'close':  
+                    //clear prev details
+                    setExpanseDetails({});
+                    // Close popup
+                    setIsPopup(false);
+                    setErrorList([]);
+                    break;
             }
         }
 
@@ -145,7 +184,7 @@ const Home = () => {
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
-                        setIsPopup={setIsPopup}
+                        constantList={constantList}
                     />
                     }
 
@@ -155,9 +194,9 @@ const Home = () => {
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
-                        setIsPopup={setIsPopup}
                         chartType={chartType}
                         chartDetails={chartDetails}
+                        constantList={constantList}
                     />
                     }
 
@@ -167,7 +206,6 @@ const Home = () => {
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
-                        setIsPopup={setIsPopup}
                         onGroupValueChange={onGroupValueChange}
                     />
                     }
@@ -183,7 +221,7 @@ const Home = () => {
                         <Button
                             key="addExpenseBtn"
                             buttonId ="addExpense"
-                            buttonConClassName="addExpenseBtnCon"
+                            buttonConClassName=""
                             buttonClassName="addExpenseBtnClass"
                             onSubmit={(e)=>onButtonClick(e)}
                             title="Add Expense"
