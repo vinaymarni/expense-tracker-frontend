@@ -107,4 +107,9 @@ const day = String(date.getDate()).padStart(2, '0');
 
 export const todayDate = `${year}-${month}-${day}`;
 
-export const currentMonth = date.toLocaleString('default', { month: 'long' });
+export const getCurrentMonthId =(monthsArray) => {
+    let currentMonthName = new Date().toLocaleString('default', { month: 'long' });
+
+    let currentMonth = monthsArray.filter(each=>each.constName == currentMonthName)[0].constId
+    return currentMonth;
+};

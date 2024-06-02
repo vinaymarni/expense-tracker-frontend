@@ -185,7 +185,10 @@ export const getMonthlyExpense = (setMonthlyExpense, monthId) => {
     .then(res=>{
         if (res.status == true) {
             console.log("Success");
-            setMonthlyExpense(res.result);
+            setMonthlyExpense((prevItems)=>{
+                let updatedList = [...prevItems, ...res.result];
+                return updatedList;
+            });
         }else{
             console.log("Fail");
         }
