@@ -164,17 +164,20 @@ export const getConstantList = (setConstantList) => {
     const url = `${URL}/common/getConstantList?groupName=Expense&groupName=month`;
     
     fetch(url)
-    .then(response => { 
-        return response.json()
-    })
-    .then(res=>{
-        if (res !== undefined) {
-            setConstantList(res);
-        }else{
-            console.log("getConstantList Api Fail");
-        }
-    })
-    .catch((err=>{
-        console.error(err);
-    }));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(res => {
+            if (res !== undefined) {
+                setConstantList(res);
+            } else {
+                console.log("getConstantList API returned undefined");
+            }
+        })
+        .catch(err => {
+            console.error("Failed to fetch constant list:", err);
+        });
 };

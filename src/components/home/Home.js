@@ -22,11 +22,11 @@ const Home = () => {
 
     const [constantList, setConstantList] = useState([]);
 
-    useEffect(() => {
+    useEffect(()=>{
         if(constantList.length === 0){
             getConstantList(setConstantList);
         }
-    })
+    },[])
 
 
     const removeErrorIds = (name) =>{
