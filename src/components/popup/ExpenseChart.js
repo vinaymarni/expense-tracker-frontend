@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import InputField from '../../commonElements/InputField';
 import { crossIcon } from '../../commonElements/commonSvgs';
 import Button from '../../commonElements/Button';
 import './popup.css'
+import { currentMonth, setValueFromId } from '../../commonElements/commonData';
 
-let dummyArray = [0,1,2,3,4,5,6,7,8,9];
-
-const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chartDetails, constantList }) => {
+const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chartDetails, 
+                        constantList, allExpanseDetails}) => {
+    
+    const [totalPrice, setTotalPrice] = useState(0);
 
     let monthsList = constantList.filter(each=>each.constType === "month");
     let ExpenseList = constantList.filter(each=>each.constType === "Expense");
+
+    useEffect(()=>{
+        let price = 0;
+        allExpanseDetails.map(each=>{
+            price = price + each.price
+        });
+        setTotalPrice(price);
+
+        console.log(currentMonth, monthsList)
+
+
+    },[allExpanseDetails]);
+
 
     return (
         <div className="popupStaticCon">
@@ -22,7 +37,7 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                 </div>
 
                 <div className='chartTopFieldsCon'>
-                    <p className="chartTotalPrice">Total Spent : <span>₹45 000</span></p>
+                    <p className="chartTotalPrice">Total Spent : <span>₹{totalPrice}</span></p>
 
                     <select name="months" className="monthsDropdown" id="months">
                         {monthsList && monthsList.map((each, ind)=>{
@@ -35,7 +50,7 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                     <Button
                         key="addExpenseBtn_chart"
                         buttonId ="addExpenseBtn_chart"
-                        buttonConClassName="addExpenseBtnCon"
+                        buttonConClassName=""
                         buttonClassName="addExpenseBtnClass"
                         onSubmit={(e)=>onButtonClick(e)}
                         title="Add Expense"
@@ -49,7 +64,7 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                 <div className="chartTableRow">
                         <div className="priceDetailsCrad priceDetailsLeftCard chartPriceCrad">
                             <p className="priceDetailsCradText">Overall you owe</p>
-                            <p className="priceDetailsCradPriceText">₹ 4000/-</p>
+                            <p className="priceDetailsCradPriceText">₹ {totalPrice}/-</p>
                         </div>
 
                         <div className="priceDetailsCrad chartPriceCrad priceCardLeftCard">
@@ -80,15 +95,18 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                     </div>
 
                     <div className="chartTableRowsMainCon">
-                        {dummyArray.map((eachRow, ind)=>{
+                        {allExpanseDetails.map((eachRow, ind)=>{
                             let n = String(ind);
                             var number = n.length === 1 ? `0${ind + 1}` : (ind + 1);
+
+                            const d = new Date(eachRow.expenseDate);
+                            let dateText = d.toLocaleDateString();
                             return (
                                 <div key={ind} className="chartTableRow">
                                     <p className="chartColumn snoBox">{number}</p>
-                                    <p className="chartColumn dateBox">12/02/2001</p>
-                                    <p className="chartColumn spentBox">Sports</p>
-                                    <p className="chartColumn amountBox">₹ 1400</p>
+                                    <p className="chartColumn dateBox">{dateText}</p>
+                                    <p className="chartColumn spentBox">{setValueFromId(ExpenseList, eachRow.categoryId)}</p>
+                                    <p className="chartColumn amountBox">₹ {eachRow.price}</p>
                                 </div>
                             )
                         })}

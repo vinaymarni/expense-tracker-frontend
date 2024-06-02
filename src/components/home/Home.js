@@ -3,16 +3,18 @@ import './home.css'
 import Header from '../header/Header';
 import Button from '../../commonElements/Button';
 import { cashIcon, chartIcon, groupIcon, handMoneySvg } from '../../commonElements/commonSvgs';
-import { allCategory, groupColors, isNull, isValueNull } from '../../commonElements/commonData';
+import { allCategory, groupColors, isNull, isValueNull, todayDate } from '../../commonElements/commonData';
 import AddExpense from '../popup/AddExpense';
 import CreateGroup from '../popup/CreateGroup';
 import ExpenseChart from '../popup/ExpenseChart';
-import { addExpanse, getConstantList } from '../../apis';
+import { addExpanse, getConstantList, getMonthlyExpense } from '../../apis';
 import { addExpanseValidation } from '../../validations';
 
-const Home = () => {
+const Home = ({userHomeDetails, onLogOut}) => {
     const [isPopup, setIsPopup] = useState(false);
     const [expanseDetails, setExpanseDetails] = useState({});
+    const [allExpanseDetails, setAllExpanseDetails] = useState([]);
+
     const [errorList, setErrorList] = useState([]);
     const [currentPopup, setCurrentPopup] = useState("");
     const [groupDetails, setGroupDetails] = useState([]);
@@ -26,7 +28,11 @@ const Home = () => {
         if(constantList.length === 0){
             getConstantList(setConstantList);
         }
-    })
+        
+        if(allExpanseDetails.length === 0){
+            getMonthlyExpense(setAllExpanseDetails, 28);
+        }
+    }, []);
 
 
     const removeErrorIds = (name) =>{
@@ -66,7 +72,7 @@ const Home = () => {
     
     const onButtonClick = (e, identifier, index, data) => {
         if(identifier == undefined && e !== undefined && e.target !== undefined && e.target.name !== undefined){
-            setCurrentPopup(e.target.name);  
+            setCurrentPopup(e.target.name);
             setIsPopup(true);
             setChartType(e.target.name);
         };
@@ -77,28 +83,22 @@ const Home = () => {
 
         let errorIds=[...errorList];
 
-        let currentDate = new Date().toJSON();
-        // new Date().toJSON().slice(0, 10);
-
         if(identifier){
             switch (identifier) {
                 case 'addExpense':
-
-                    expanseDetails.expenseDate = new Date(expanseDetails.expenseDate).toJSON();;
+                    if(expanseDetails.expenseDate){
+                        expanseDetails.expenseDate = new Date(expanseDetails.expenseDate).toJSON();
+                    }else{
+                        expanseDetails.expenseDate = todayDate;
+                    }
                     expanseDetails.isActive = "Y"
 
                     //Api call
                     if(addExpanseValidation(expanseDetails) == true){
-                        addExpanse(expanseDetails);
-
-                        //clear prev details
-                        setExpanseDetails({});
-
-                        // Close popup
-                        setIsPopup(false);
+                        addExpanse(expanseDetails, setAllExpanseDetails, setExpanseDetails, setIsPopup);
                     }else{
-                        console.log("Fill all required Details")
-                    }           
+                        console.log("Fill all required Details");
+                    };
                         
                     break;
                 case 'expenseChart':
@@ -173,7 +173,7 @@ const Home = () => {
 
     return (
         <div className="homeMainContainer">
-            <Header />
+            <Header userHomeDetails={userHomeDetails} onLogOut={onLogOut} />
             {isPopup &&
                 <Fragment>
 
@@ -197,6 +197,7 @@ const Home = () => {
                         chartType={chartType}
                         chartDetails={chartDetails}
                         constantList={constantList}
+                        allExpanseDetails={allExpanseDetails}
                     />
                     }
 
