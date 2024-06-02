@@ -57,14 +57,16 @@ const updateErrorMessage = (elId, message, status) => {
 };
 
 
-export const userSignupAndLogin = (userDetails, setIsLogin, identifier) => {
+export const userSignupAndLogin = (userDetails, setIsLogin, identifier, setUserHomeDetails, monthId) => {
     const url = identifier !== "login" ? `${URL}/user/v1/register` : `${URL}/user/v1/auth/login`;
-
     enebleAndDisbledBtn("loginButton", "EN");
 
     fetch(url,{
         method:'post',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json',
+            'Content-Type': 'application/json' 
+        },
 		body: JSON.stringify(userDetails)
     })
     .then(response => { 
@@ -75,11 +77,13 @@ export const userSignupAndLogin = (userDetails, setIsLogin, identifier) => {
         if (res.status == true) {
             if(res.token){
                 cookies.set('token', res.token);
-            }
-
+            };
             setIsLogin(prev => !prev);
-
             updateErrorMessage("loginErrorMsg", "", "HIDE");
+
+            if(identifier === "login"){
+                getUserDetails(setUserHomeDetails, monthId, setIsLogin);
+            }
         }else{
             updateErrorMessage("loginErrorMsg", res.message, "SHOW");
         }
@@ -88,10 +92,21 @@ export const userSignupAndLogin = (userDetails, setIsLogin, identifier) => {
         enebleAndDisbledBtn("loginButton", "DIS");
         console.error(err);
     }));
+    
+};
+
+export const userLogOut = (setUserHomeDetails, setIsLogin) => {
+    cookies.remove('token');
+    const cooki = new Cookies();
+    cooki.remove('token');
+    setUserHomeDetails({});
+    setIsLogin(false);
+    
+    // window.location.reload(false);
 };
 
 
-export const addExpanse = (expenseDetails) => {
+export const addExpanse = (expenseDetails, setAllExpanseDetails, setExpanseDetails, setIsPopup) => {
     const url = `${URL}/expense/add-expense`;
     let token0 = cookies.get("token");
 
@@ -108,28 +123,41 @@ export const addExpanse = (expenseDetails) => {
     })
     .then(res=>{
         if (res.status == true) {
-            console.log("Success");
-        }else{
-            console.log("Fail");
+            setExpanseDetails({});
+            setIsPopup(false);
+            setAllExpanseDetails((prev)=>{
+                let prevArray = [...prev];
+                prevArray.push(res.data);
+                return prevArray;
+            });
         }
     })
     .catch((err=>{
         console.error(err);
     }));
+  
 };
 
 
-export const getUserDetails = (setUserHomeDetails, monthId) => {
+export const getUserDetails = (setUserHomeDetails, monthId, setIsLogin) => {
     const url = `${URL}/user/v1/home-page?monthId=${monthId}`;
+    let token0 = cookies.get("token");
 
-    fetch(url)
+    fetch(url,{
+        method: 'get',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token0}`
+        }
+    })
     .then(response => { 
         return response.json()
     })
     .then(res=>{
         if (res.status == true) {
             console.log("Success");
-            //setUserHomeDetails(res);
+            setUserHomeDetails(res.user);
+            setIsLogin(true);
         }else{
             console.log("Fail");
         }
@@ -142,15 +170,22 @@ export const getUserDetails = (setUserHomeDetails, monthId) => {
 
 export const getMonthlyExpense = (setMonthlyExpense, monthId) => {
     const url = `${URL}/expense/get-monthly-expense?monthId=${monthId}`;
-    
-    fetch(url)
+    let token0 = cookies.get("token");
+
+    fetch(url,{
+        method: 'get',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token0}`
+        }
+    })
     .then(response => { 
         return response.json()
     })
     .then(res=>{
         if (res.status == true) {
             console.log("Success");
-            //setMonthlyExpense(res);
+            setMonthlyExpense(res.result);
         }else{
             console.log("Fail");
         }

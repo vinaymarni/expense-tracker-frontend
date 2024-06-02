@@ -4,7 +4,7 @@ import { cashIcon, crossIcon } from '../../commonElements/commonSvgs';
 import Button from '../../commonElements/Button';
 import './popup.css'
 import Dropdown from '../../commonElements/Dropdown';
-import { allCategory, setValueFromId } from '../../commonElements/commonData';
+import { setValueFromId, todayDate } from '../../commonElements/commonData';
 import TextAreaField from '../../commonElements/TextAreaField';
 
 
@@ -12,9 +12,9 @@ const AddExpense = ({onValueChange, errorList, onButtonClick, expanseDetails, co
 
     const onDropChange = (e, name, obj) => {
         onValueChange(undefined, name, obj.constId);
-    }
+    };
 
-    let monthsList = constantList.filter(each=>each.constType === "month");
+
     let ExpenseList = constantList.filter(each=>each.constType === "Expense");
 
     return (
@@ -56,7 +56,7 @@ const AddExpense = ({onValueChange, errorList, onButtonClick, expanseDetails, co
                                 labelClassName="popupInputFieldLable"
                                 inputClassName={`loginInputField ${errorList.includes("expenseDate") ? "errorClass" : ""}`}
                                 containerClass="loginInputContainer loginInputDateCon"
-                                value={expanseDetails.expenseDate != undefined ? expanseDetails.expenseDate : ""}
+                                value={expanseDetails.expenseDate != undefined ? expanseDetails.expenseDate : todayDate}
                                 onChange={onValueChange}
                             />
                         </div>

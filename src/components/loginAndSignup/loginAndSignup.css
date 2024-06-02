@@ -245,4 +245,8 @@ button{
     .loginInputContainer{
         gap: 8px;
     }
+
+    .loginLeftSideCon{
+        display: none;
+    }
 }

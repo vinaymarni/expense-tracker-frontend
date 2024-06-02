@@ -4,11 +4,9 @@ import InputField from '../../commonElements/InputField';
 import Button from '../../commonElements/Button';
 import { eyeIcon, loginPageSvg } from '../../commonElements/commonSvgs';
 import { isNull } from '../../commonElements/commonData';
-import { userSignupAndLogin } from '../../apis';
 
-const LoginAndSignup = ({setIsLogin}) => {
+const LoginAndSignup = ({userDetails, setUserDetails, onFunction}) => {
     const [isSignPage, setIsSignPage] = useState(false);
-    const [userDetails, setUserDetails] = useState({});
     const [errorList, setErrorList] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -62,9 +60,9 @@ const LoginAndSignup = ({setIsLogin}) => {
 
                 //If API call Success
                 if(isSignPage){
-                    userSignupAndLogin(userDetails, setIsLogin, "signup");
+                    onFunction("register");
                 }else{
-                    userSignupAndLogin(userDetails, setIsLogin, "login");
+                    onFunction("login");
                 };
             }
 
