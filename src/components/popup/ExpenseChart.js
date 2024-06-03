@@ -3,7 +3,7 @@ import InputField from '../../commonElements/InputField';
 import { crossIcon } from '../../commonElements/commonSvgs';
 import Button from '../../commonElements/Button';
 import './popup.css'
-import { currentMonthName, getCurrentMonthId, monthIds, setValueFromId } from '../../commonElements/commonData';
+import { currentMonthName, monthIds, setValueFromId } from '../../commonElements/commonData';
 import { getMonthlyExpense } from '../../apis';
 
 const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chartDetails, 
@@ -70,7 +70,7 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                 <div className='chartTopFieldsCon'>
                     <p className="chartTotalPrice">Total Spent : <span>₹{totalPrice}</span></p>
 
-                    <select name="months" onChange={(e)=>setSelectEdDateId(e.target.value)} value={selectEdDateId != null ? selectEdDateId : getCurrentMonthId(monthsList)} className="monthsDropdown" id="months">
+                    <select name="months" onChange={(e)=>setSelectEdDateId(e.target.value)} value={selectEdDateId != null ? selectEdDateId : (monthsList)} className="monthsDropdown" id="months">
                         {monthsList && monthsList.map((each, ind)=>{
                             return(
                                 <option key={ind} value={each.constId}>{each.constName}</option>

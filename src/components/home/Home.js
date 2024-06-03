@@ -3,7 +3,7 @@ import './home.css'
 import Header from '../header/Header';
 import Button from '../../commonElements/Button';
 import { cashIcon, chartIcon, groupIcon, handMoneySvg } from '../../commonElements/commonSvgs';
-import { allCategory, currentMonthName, getCurrentMonthId, groupColors, isNull, isValueNull, monthIds, todayDate } from '../../commonElements/commonData';
+import { allCategory, currentMonthName, groupColors, isNull, isValueNull, monthIds, todayDate } from '../../commonElements/commonData';
 import AddExpense from '../popup/AddExpense';
 import CreateGroup from '../popup/CreateGroup';
 import ExpenseChart from '../popup/ExpenseChart';

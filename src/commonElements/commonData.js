@@ -109,13 +109,6 @@ export const todayDate = `${year}-${month}-${day}`;
 
 export const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
 
-export const getCurrentMonthId =(monthsArray) => {
-
-    let currentMonth = monthsArray.filter(each=>each.constName == currentMonthName)[0].constId
-    return currentMonth;
-};
-
-
 export const monthIds = {
     January:23,
     February:24,
