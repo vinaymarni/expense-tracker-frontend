@@ -44,7 +44,7 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                     expanseDetails.groupMembers.map((eachMember, index)=>{
                         return(
                             <div className="groupMemebersMainCon">
-                                <div className="groupMemeberFieldCon">
+                                {/* <div className="groupMemeberFieldCon">
                                     <InputField
                                         key={`newMember_${index}`}
                                         inputId = {`newMember_${index}`}
@@ -59,7 +59,7 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                                         value={eachMember.name}
                                         onChange={(e) =>onGroupValueChange(e, index)}
                                     /> 
-                                </div>
+                                </div> */}
 
                                 <div className="groupMemeberFieldCon">
                                     <InputField
@@ -86,7 +86,7 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                 }
 
                 <div className="groupMemebersMainCon">
-                    <InputField
+                    {/* <InputField
                         key="newMember"
                         inputId = "newMember"
                         required={true}
@@ -98,7 +98,7 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                         inputClassName={`loginInputField ${errorList.includes("newMember") ? "errorClass" : ""}`}
                         containerClass="loginInputContainer"
                         onChange={(e) =>onGroupValueChange(e, undefined)}
-                    />
+                    /> */}
 
                     <InputField
                         key="newMemberNumber"
@@ -121,7 +121,7 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                     buttonId ="addNewMember"
                     buttonClassName="createGroupBtn"
                     onSubmit={(e)=>onButtonClick(e, "addNewMember")}
-                    title="Add More Member"
+                    title="Add Number"
                     name="addNewMember"
                     icon=""
                 />

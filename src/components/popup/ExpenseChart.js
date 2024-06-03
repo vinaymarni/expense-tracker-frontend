@@ -3,7 +3,7 @@ import InputField from '../../commonElements/InputField';
 import { crossIcon } from '../../commonElements/commonSvgs';
 import Button from '../../commonElements/Button';
 import './popup.css'
-import { getCurrentMonthId, setValueFromId } from '../../commonElements/commonData';
+import { currentMonthName, getCurrentMonthId, monthIds, setValueFromId } from '../../commonElements/commonData';
 import { getMonthlyExpense } from '../../apis';
 
 const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chartDetails, 
@@ -15,9 +15,9 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
     let monthsList = constantList.filter(each=>each.constType === "month");
     let ExpenseList = constantList.filter(each=>each.constType === "Expense");
 
+    let defaultDate = monthIds[currentMonthName];
 
     useEffect(() => {
-        let defaultDate = getCurrentMonthId(monthsList);
         let selDate;
         if(selectEdDateId === null){
             setSelectEdDateId(defaultDate);
@@ -36,7 +36,6 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
     },[selectEdDateId]);
 
     useEffect(()=>{
-        let defaultDate = getCurrentMonthId(monthsList);
         let selDate;
         if(selectEdDateId === null){
             setSelectEdDateId(defaultDate);
@@ -134,10 +133,9 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                             const d = new Date(eachRow.expenseDate);
                             let dateText = d.toLocaleDateString();
 
-                            let sDate = setValueFromId(monthsList, selectEdDateId);
                             let everyMontName = new Date(eachRow.expenseDate).toLocaleString('default', { month: 'long' });
 
-                            if(everyMontName == sDate){
+                            if(monthIds[everyMontName] == selectEdDateId){
                             return (
                                 <div key={ind} className="chartTableRow">
                                     <p className="chartColumn snoBox">{number}</p>
