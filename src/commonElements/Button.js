@@ -2,7 +2,8 @@
 
 import React from "react";
 
-const Button = ({ buttonId, buttonConClassName, buttonClassName, onSubmit, title, value, name, icon, toolTip }) => {
+const Button = ({ buttonId, buttonConClassName, buttonClassName, onSubmit, 
+                title, value, name, icon, toolTip }) => {
 
     return(
         <div className={buttonConClassName}>

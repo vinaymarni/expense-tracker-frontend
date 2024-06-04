@@ -70,6 +70,46 @@ export const isNull = (object, value) => {
     }else{
         return true;
     }
-}
+};
+
+export const isValueNull = (element) => {
+    if( element == undefined || 
+        element == null || 
+        element.value == "" ||
+        element.value == ''
+    ){
+        return false;             
+    }else{
+        return true;
+    }
+};
 
 
+export const setValueFromId =(dropdownArray, value) => {
+    let name = "";
+    dropdownArray.map(each=>{
+        if(each.constId != undefined && each.constId == value){
+            name = each.constName;
+        }else if(each.id != undefined && each.id == value){
+            name = each.id;
+        }else if(each != undefined && each == value){
+            name = each;
+        }
+    })
+    return name;
+};
+
+
+let date = new Date();
+const year = date.getFullYear();
+const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1
+const day = String(date.getDate()).padStart(2, '0');
+
+export const todayDate = `${year}-${month}-${day}`;
+
+export const getCurrentMonthId =(monthsArray) => {
+    let currentMonthName = new Date().toLocaleString('default', { month: 'long' });
+
+    let currentMonth = monthsArray.filter(each=>each.constName == currentMonthName)[0].constId
+    return currentMonth;
+};

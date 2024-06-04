@@ -63,7 +63,7 @@ const Dropdown = ({inputId, placeholder, error, array,
                                 onChange={(e)=>{onChange(e, name, eachItem); onInputClick()}}
                             />
         
-                            <label className='dropdownClassLable' htmlFor={`dropdown_${index}_${inputId}`}>{eachItem.title}</label>
+                            <label className='dropdownClassLable' htmlFor={`dropdown_${index}_${inputId}`}>{eachItem.constName}</label>
                         </div>
                     )
                 })}

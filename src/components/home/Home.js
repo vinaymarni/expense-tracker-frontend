@@ -1,22 +1,60 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './home.css'
 import Header from '../header/Header';
 import Button from '../../commonElements/Button';
 import { cashIcon, chartIcon, groupIcon, handMoneySvg } from '../../commonElements/commonSvgs';
-import { allCategory, groupColors, isNull } from '../../commonElements/commonData';
+import { allCategory, getCurrentMonthId, groupColors, isNull, isValueNull, todayDate } from '../../commonElements/commonData';
 import AddExpense from '../popup/AddExpense';
 import CreateGroup from '../popup/CreateGroup';
 import ExpenseChart from '../popup/ExpenseChart';
+import { addExpanse, getConstantList, getMonthlyExpense } from '../../apis';
+import { addExpanseValidation } from '../../validations';
 
-const Home = () => {
+const Home = ({userHomeDetails, onLogOut}) => {
     const [isPopup, setIsPopup] = useState(false);
     const [expanseDetails, setExpanseDetails] = useState({});
+    const [allExpanseDetails, setAllExpanseDetails] = useState([]);
+
     const [errorList, setErrorList] = useState([]);
     const [currentPopup, setCurrentPopup] = useState("");
     const [groupDetails, setGroupDetails] = useState([]);
     const [chartType, setChartType] = useState("");
 
     const [chartDetails, setChartDetails] = useState({});
+
+    const [constantList, setConstantList] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+
+
+    
+
+
+    useEffect(() => {
+        if(constantList.length === 0){
+            getConstantList(setConstantList);
+        }
+    }, []);
+
+    useEffect(() => {
+        if(constantList.length !== 0){
+            let monthsList = constantList.filter(each=>each.constType === "month");
+
+            if(allExpanseDetails.length === 0){
+                let defaultDate = getCurrentMonthId(monthsList);
+                getMonthlyExpense(setAllExpanseDetails, defaultDate);
+            }
+        }
+    }, [constantList]);
+
+    useEffect(() => {
+        if(allExpanseDetails.length !== 0){
+            let price = 0;
+            allExpanseDetails.map(each=>{
+                price = price + each.price
+            });
+            setTotalPrice(price);
+        }
+    }, [allExpanseDetails]);
 
 
     const removeErrorIds = (name) =>{
@@ -47,43 +85,48 @@ const Home = () => {
 
         if(index != undefined){
             let prevList = [...expanseDetails.groupMembers];
-            prevList[index] = e.target.value;
+            let obj = prevList[index];
+            obj[e.target.name] = e.target.value;
             onValueChange(undefined, "groupMembers", prevList);
         }
     };
 
     
     const onButtonClick = (e, identifier, index, data) => {
-        if(identifier == undefined){
-            setCurrentPopup(e.target.name);  
+        if(identifier == undefined && e !== undefined && e.target !== undefined && e.target.name !== undefined){
+            setCurrentPopup(e.target.name);
             setIsPopup(true);
             setChartType(e.target.name);
         };
 
-        if(e.target.name == "groupDetails"){
+        if(e !== undefined && e.target !== undefined && e.target.name !== undefined && e.target.name == "groupDetails" ){
             setChartDetails(data);
         }
 
         let errorIds=[...errorList];
 
-        let currentDate = new Date().toJSON();
-        // new Date().toJSON().slice(0, 10);
-
         if(identifier){
             switch (identifier) {
                 case 'addExpense':
+                    if(expanseDetails.expenseDate){
+                        expanseDetails.expenseDate = new Date(expanseDetails.expenseDate).toJSON();
+                    }else{
+                        expanseDetails.expenseDate = todayDate;
+                    }
+                    expanseDetails.isActive = "Y"
 
-                    expanseDetails.paymentDate = currentDate;
-                    console.log(expanseDetails);
-
-                   //clear prev details
-                   setExpanseDetails({});
-                   // Close popup
-                   setIsPopup(false);
-                    
+                    //Api call
+                    if(addExpanseValidation(expanseDetails) == true){
+                        addExpanse(expanseDetails, setAllExpanseDetails, setExpanseDetails, setIsPopup);
+                    }else{
+                        console.log("Fill all required Details");
+                    };
+                        
                     break;
                 case 'expenseChart':
                     console.log("Expense Chart");
+                    console.log(expanseDetails);
+                    
                     
                     break;
                 case 'createGroup':
@@ -105,11 +148,23 @@ const Home = () => {
                 case 'addNewMember':
                     let newList = isNull(expanseDetails, "groupMembers") ? [...expanseDetails.groupMembers] : [];
                     let newMemberEl = document.getElementById('newMember');
-                    if(newMemberEl && newMemberEl.value){
-                        newList.push(newMemberEl.value);
+                    let newNumberEl = document.getElementById('newMemberNumber');
+                   
+                    if(isValueNull(newMemberEl) && isValueNull(newNumberEl)){
+                        let obj={
+                            name : newMemberEl.value,
+                            number: newNumberEl.value 
+                        };
+                        newList.push(obj);
                         onValueChange(undefined, "groupMembers", newList);
                         newMemberEl.value = "";
+                        newNumberEl.value = "";
                         
+                    }else if(!isValueNull(newMemberEl) && !isValueNull(newNumberEl)){
+                        errorIds.push("newMember");
+                        errorIds.push("newMemberNumber");
+                    }else if(isValueNull(newMemberEl) && !isValueNull(newNumberEl)){
+                        errorIds.push("newMemberNumber");
                     }else{
                         errorIds.push("newMember");
                     }
@@ -121,7 +176,13 @@ const Home = () => {
                     onValueChange(undefined, "groupMembers", prevList);
 
                     break;
-                    
+                case 'close':  
+                    //clear prev details
+                    setExpanseDetails({});
+                    // Close popup
+                    setIsPopup(false);
+                    setErrorList([]);
+                    break;
             }
         }
 
@@ -134,7 +195,7 @@ const Home = () => {
 
     return (
         <div className="homeMainContainer">
-            <Header />
+            <Header userHomeDetails={userHomeDetails} onLogOut={onLogOut} />
             {isPopup &&
                 <Fragment>
 
@@ -145,7 +206,7 @@ const Home = () => {
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
-                        setIsPopup={setIsPopup}
+                        constantList={constantList}
                     />
                     }
 
@@ -155,9 +216,11 @@ const Home = () => {
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
-                        setIsPopup={setIsPopup}
                         chartType={chartType}
                         chartDetails={chartDetails}
+                        constantList={constantList}
+                        allExpanseDetails={allExpanseDetails}
+                        setAllExpanseDetails={setAllExpanseDetails}
                     />
                     }
 
@@ -167,7 +230,6 @@ const Home = () => {
                         onValueChange={onValueChange}
                         expanseDetails={expanseDetails} 
                         onButtonClick={onButtonClick}
-                        setIsPopup={setIsPopup}
                         onGroupValueChange={onGroupValueChange}
                     />
                     }
@@ -176,14 +238,14 @@ const Home = () => {
             }
             <div className="homeInnerContainer">
                 <div className="homeLeftContainer">
-                    <p className="homeNameHeading">Hello Tanuj👋</p>
+                    <p className="homeNameHeading">Hello {userHomeDetails.name}👋</p>
                     <p className="homeNameHeading">Welcome to  Expense Tracker!</p>
                     <div className="homeAddExpenseCon">
                         <p>Track Your Spending, Control Your Future: Start Adding Expenses Today!</p>
                         <Button
                             key="addExpenseBtn"
                             buttonId ="addExpense"
-                            buttonConClassName="addExpenseBtnCon"
+                            buttonConClassName=""
                             buttonClassName="addExpenseBtnClass"
                             onSubmit={(e)=>onButtonClick(e)}
                             title="Add Expense"
@@ -192,7 +254,7 @@ const Home = () => {
                         />
                     </div>
 
-                    <p className="homeTotalMoneyTextCon">Your Expense on your favorites.... <span className="homeTotalMoneyText">Total Spent : <span>₹45 000</span></span></p>
+                    <p className="homeTotalMoneyTextCon">Your Expense on your favorites.... <span className="homeTotalMoneyText">Total Spent : <span>₹{totalPrice}</span></span></p>
 
                     <div className="allCategoryDisplayCon">
                         {allCategory.map((eachItem, i) =>{

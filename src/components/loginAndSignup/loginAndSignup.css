@@ -80,7 +80,7 @@ button{
     justify-content: flex-start;
     align-items: flex-start;
     margin-bottom: 2%;
-    max-width: 493px;
+    /* max-width: 493px; */
 }
 
 .loginInputFieldLable{
@@ -121,6 +121,7 @@ button{
     max-width: 274px;
     margin-top: 20px;
     margin-bottom: 20px;
+    position: relative;
 }
 
 .loginPageBottomText{
@@ -145,6 +146,18 @@ button{
 .loginButtonClass,
 .loginInputField:focus{
     outline: none;
+}
+
+.errorMessage{
+    color: #F00 !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+.groupMemebersMainCon{
+    display: flex;
+    gap: 14px;
 }
 
 
@@ -231,5 +244,9 @@ button{
 
     .loginInputContainer{
         gap: 8px;
+    }
+
+    .loginLeftSideCon{
+        display: none;
     }
 }

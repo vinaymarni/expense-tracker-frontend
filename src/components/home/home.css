@@ -72,6 +72,13 @@
     text-align: left;
 }
 
+.addExpenseBtnCon{
+    width: 100%;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+}
+
 .addExpenseBtnClass{
     border-radius: 6px;
     background: #0575E6;
@@ -91,6 +98,7 @@
     color: #000;
     font-size: 27px;
     font-weight: 500;
+    text-transform: capitalize;
 }
 
 .homeTotalMoneyTextCon{
