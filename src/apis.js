@@ -219,3 +219,47 @@ export const getConstantList = (setConstantList) => {
             console.error("Failed to fetch constant list:", err);
         });
 };
+
+
+
+export const addGroupNameAndMembers = async (group, identifier, mobile, isDeleted) => {
+    const queryParams = [];
+
+    if (identifier !== null) {
+        queryParams.push(`identifier=${identifier}`);
+    }
+
+    if (mobile !== null) {
+        queryParams.push(`mobile=${mobile}`);
+    }
+
+    if (isDeleted !== null) {
+        queryParams.push(`isDeleted=${isDeleted}`);
+    }
+
+    const url = `${URL}/group/edit-group?${queryParams.join('&')}`;
+    const token0 = cookies.get("token");
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token0}`
+            },
+            body: JSON.stringify(group)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const res = await response.json();
+
+        return res;
+    } catch (err) {
+        console.error("Failed to fetch constant list:", err);
+        throw err;
+    }
+};
+

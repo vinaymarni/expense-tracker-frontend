@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import React, { Fragment, useEffect, useState } from 'react';
 import './home.css'
 import Header from '../header/Header';
@@ -7,7 +8,7 @@ import { allCategory, currentMonthName, groupColors, isNull, isValueNull, monthI
 import AddExpense from '../popup/AddExpense';
 import CreateGroup from '../popup/CreateGroup';
 import ExpenseChart from '../popup/ExpenseChart';
-import { addExpanse, getConstantList, getMonthlyExpense } from '../../apis';
+import { addExpanse, addGroupNameAndMembers, getConstantList, getMonthlyExpense } from '../../apis';
 import { addExpanseValidation } from '../../validations';
 
 const Home = ({userHomeDetails, onLogOut}) => {
@@ -130,15 +131,20 @@ const Home = ({userHomeDetails, onLogOut}) => {
                         errorIds.push("groupName");
                     }
 
-                    if(isNull(expanseDetails, "groupName") && isNull(expanseDetails, "groupMembers")){
-                        console.log("Create Group", expanseDetails);
-                        let prevArray = [...groupDetails];
-                        prevArray.push(expanseDetails);
-                        setGroupDetails(prevArray);
-                        //clear prev details
-                        setExpanseDetails({});
-                        // Close popup
-                        setIsPopup(false);
+                    if(isNull(expanseDetails, "groupName")){
+                        addGroupNameAndMembers(expanseDetails, "G", null, null)
+                        .then(res => {
+                            if (res.status === true) {
+                                const prevArray = [...groupDetails];
+                                prevArray.push(res.group);
+                                setGroupDetails(prevArray);
+                                setExpanseDetails({});
+                                setIsPopup(false);
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Error in addGroupNameAndMembers:", err);
+                        });
                     }
                     break;
                 case 'addNewMember':

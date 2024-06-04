@@ -37,29 +37,13 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                 />
 
                 <hr className="groupPopuphrLine" />
-
+{/* 
                 <h3 className='groupPopupHeading'>Add Group Members</h3>
 
                 {isNull(expanseDetails, "groupMembers") &&
                     expanseDetails.groupMembers.map((eachMember, index)=>{
                         return(
                             <div className="groupMemebersMainCon">
-                                {/* <div className="groupMemeberFieldCon">
-                                    <InputField
-                                        key={`newMember_${index}`}
-                                        inputId = {`newMember_${index}`}
-                                        required={true}
-                                        inputType="text"
-                                        name="name"
-                                        placeholder={`Enter Member Name ${index+1}`}
-                                        labelName=""
-                                        labelClassName=""
-                                        inputClassName={`loginInputField ${errorList.includes(`newMember_${index}`) ? "errorClass" : ""}`}
-                                        containerClass="loginInputContainer"
-                                        value={eachMember.name}
-                                        onChange={(e) =>onGroupValueChange(e, index)}
-                                    /> 
-                                </div> */}
 
                                 <div className="groupMemeberFieldCon">
                                     <InputField
@@ -83,22 +67,9 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                             </div>
                         )
                     })
-                }
+                } */}
 
-                <div className="groupMemebersMainCon">
-                    {/* <InputField
-                        key="newMember"
-                        inputId = "newMember"
-                        required={true}
-                        inputType="text"
-                        name="newMember"
-                        placeholder={`Enter Member Name ${isNull(expanseDetails, "groupMembers") ? expanseDetails.groupMembers.length+1 : 1 }`}
-                        labelName=""
-                        labelClassName=""
-                        inputClassName={`loginInputField ${errorList.includes("newMember") ? "errorClass" : ""}`}
-                        containerClass="loginInputContainer"
-                        onChange={(e) =>onGroupValueChange(e, undefined)}
-                    /> */}
+                {/* <div className="groupMemebersMainCon">
 
                     <InputField
                         key="newMemberNumber"
@@ -114,8 +85,8 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                         onChange={(e) =>onGroupValueChange(e, undefined)}
                     />
 
-                </div>
-
+                </div> */}
+{/* 
                 <Button
                     key="addNewMember"
                     buttonId ="addNewMember"
@@ -124,7 +95,7 @@ const CreateGroup = ({onValueChange, errorList, onButtonClick, expanseDetails, o
                     title="Add Number"
                     name="addNewMember"
                     icon=""
-                />
+                /> */}
 
 
                 <Button
