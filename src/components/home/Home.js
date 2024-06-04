@@ -28,15 +28,11 @@ const Home = ({userHomeDetails, onLogOut}) => {
         if(constantList.length === 0){
             getConstantList(setConstantList);
         }
-<<<<<<< HEAD
-    },[])
-=======
         
         if(allExpanseDetails.length === 0){
             getMonthlyExpense(setAllExpanseDetails, 28);
         }
     }, []);
->>>>>>> a09730d21e7b94f3ae9baa1de37e63deb9658e2e
 
 
     const removeErrorIds = (name) =>{
