@@ -3,11 +3,13 @@ import './App.css';
 import Home from './components/home/Home';
 import LoginAndSignup from './components/loginAndSignup/LoginAndSignup';
 import { getUserDetails, userLogOut, userSignupAndLogin } from './apis';
+import { currentMonthName, monthIds } from './commonElements/commonData';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userHomeDetails, setUserHomeDetails] = useState({});
-  let monthId = 28;
+  
+  let monthId = monthIds[currentMonthName];
 
   useEffect(() => {
     if(Object.keys(userHomeDetails).length === 0) {

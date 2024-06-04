@@ -107,4 +107,19 @@ const day = String(date.getDate()).padStart(2, '0');
 
 export const todayDate = `${year}-${month}-${day}`;
 
-export const currentMonth = date.toLocaleString('default', { month: 'long' });
+export const currentMonthName = new Date().toLocaleString('default', { month: 'long' });
+
+export const monthIds = {
+    January:23,
+    February:24,
+    March:25,
+    April:26,
+    May:27,
+    June:28,
+    July:29,
+    August:30,
+    September:31,
+    October:32,
+    November:33,
+    December: 34,
+};

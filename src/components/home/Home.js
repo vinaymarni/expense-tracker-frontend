@@ -3,7 +3,7 @@ import './home.css'
 import Header from '../header/Header';
 import Button from '../../commonElements/Button';
 import { cashIcon, chartIcon, groupIcon, handMoneySvg } from '../../commonElements/commonSvgs';
-import { allCategory, groupColors, isNull, isValueNull, todayDate } from '../../commonElements/commonData';
+import { allCategory, currentMonthName, groupColors, isNull, isValueNull, monthIds, todayDate } from '../../commonElements/commonData';
 import AddExpense from '../popup/AddExpense';
 import CreateGroup from '../popup/CreateGroup';
 import ExpenseChart from '../popup/ExpenseChart';
@@ -23,16 +23,34 @@ const Home = ({userHomeDetails, onLogOut}) => {
     const [chartDetails, setChartDetails] = useState({});
 
     const [constantList, setConstantList] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(()=>{
         if(constantList.length === 0){
             getConstantList(setConstantList);
         }
-        
-        if(allExpanseDetails.length === 0){
-            getMonthlyExpense(setAllExpanseDetails, 28);
-        }
     }, []);
+
+    useEffect(() => {
+        if(constantList.length !== 0){
+            let monthsList = constantList.filter(each=>each.constType === "month");
+
+            if(allExpanseDetails.length === 0){
+                let defaultDate = monthIds[currentMonthName];
+                getMonthlyExpense(setAllExpanseDetails, defaultDate);
+            }
+        }
+    }, [constantList]);
+
+    useEffect(() => {
+        if(allExpanseDetails.length !== 0){
+            let price = 0;
+            allExpanseDetails.map(each=>{
+                price = price + each.price
+            });
+            setTotalPrice(price);
+        }
+    }, [allExpanseDetails]);
 
 
     const removeErrorIds = (name) =>{
@@ -81,7 +99,7 @@ const Home = ({userHomeDetails, onLogOut}) => {
             setChartDetails(data);
         }
 
-        let errorIds=[...errorList];
+        let errorIds=[];
 
         if(identifier){
             switch (identifier) {
@@ -125,26 +143,18 @@ const Home = ({userHomeDetails, onLogOut}) => {
                     break;
                 case 'addNewMember':
                     let newList = isNull(expanseDetails, "groupMembers") ? [...expanseDetails.groupMembers] : [];
-                    let newMemberEl = document.getElementById('newMember');
                     let newNumberEl = document.getElementById('newMemberNumber');
                    
-                    if(isValueNull(newMemberEl) && isValueNull(newNumberEl)){
+                    if(isValueNull(newNumberEl) && newNumberEl.value.length == 10 ){
                         let obj={
-                            name : newMemberEl.value,
-                            number: newNumberEl.value 
+                            number: newNumberEl.value
                         };
                         newList.push(obj);
                         onValueChange(undefined, "groupMembers", newList);
-                        newMemberEl.value = "";
                         newNumberEl.value = "";
                         
-                    }else if(!isValueNull(newMemberEl) && !isValueNull(newNumberEl)){
-                        errorIds.push("newMember");
-                        errorIds.push("newMemberNumber");
-                    }else if(isValueNull(newMemberEl) && !isValueNull(newNumberEl)){
-                        errorIds.push("newMemberNumber");
                     }else{
-                        errorIds.push("newMember");
+                        errorIds.push("newMemberNumber");
                     }
                    
                     break;
@@ -198,6 +208,7 @@ const Home = ({userHomeDetails, onLogOut}) => {
                         chartDetails={chartDetails}
                         constantList={constantList}
                         allExpanseDetails={allExpanseDetails}
+                        setAllExpanseDetails={setAllExpanseDetails}
                     />
                     }
 
@@ -215,7 +226,7 @@ const Home = ({userHomeDetails, onLogOut}) => {
             }
             <div className="homeInnerContainer">
                 <div className="homeLeftContainer">
-                    <p className="homeNameHeading">Hello Tanuj👋</p>
+                    <p className="homeNameHeading">Hello {userHomeDetails.name}👋</p>
                     <p className="homeNameHeading">Welcome to  Expense Tracker!</p>
                     <div className="homeAddExpenseCon">
                         <p>Track Your Spending, Control Your Future: Start Adding Expenses Today!</p>
@@ -231,7 +242,7 @@ const Home = ({userHomeDetails, onLogOut}) => {
                         />
                     </div>
 
-                    <p className="homeTotalMoneyTextCon">Your Expense on your favorites.... <span className="homeTotalMoneyText">Total Spent : <span>₹45 000</span></span></p>
+                    <p className="homeTotalMoneyTextCon">Your Expense on your favorites.... <span className="homeTotalMoneyText">Total Spent : <span>₹{totalPrice}</span></span></p>
 
                     <div className="allCategoryDisplayCon">
                         {allCategory.map((eachItem, i) =>{

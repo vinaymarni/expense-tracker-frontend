@@ -3,27 +3,58 @@ import InputField from '../../commonElements/InputField';
 import { crossIcon } from '../../commonElements/commonSvgs';
 import Button from '../../commonElements/Button';
 import './popup.css'
-import { currentMonth, setValueFromId } from '../../commonElements/commonData';
+import { currentMonthName, monthIds, setValueFromId } from '../../commonElements/commonData';
+import { getMonthlyExpense } from '../../apis';
 
 const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chartDetails, 
-                        constantList, allExpanseDetails}) => {
+                        constantList, allExpanseDetails, setAllExpanseDetails}) => {
     
     const [totalPrice, setTotalPrice] = useState(0);
+    const [selectEdDateId, setSelectEdDateId] = useState(null);
 
     let monthsList = constantList.filter(each=>each.constType === "month");
     let ExpenseList = constantList.filter(each=>each.constType === "Expense");
 
+    let defaultDate = monthIds[currentMonthName];
+
+    useEffect(() => {
+        let selDate;
+        if(selectEdDateId === null){
+            setSelectEdDateId(defaultDate);
+            selDate = setValueFromId(monthsList, defaultDate);
+        }else{
+            selDate = setValueFromId(monthsList, selectEdDateId);
+        }
+
+        if(allExpanseDetails.length !== 0){
+            let isExist = allExpanseDetails.some(each=>new Date(each.expenseDate).toLocaleString('default', { month: 'long' }) == selDate)
+
+            if(!isExist){
+                getMonthlyExpense(setAllExpanseDetails, selectEdDateId);
+            };
+        }
+    },[selectEdDateId]);
+
     useEffect(()=>{
+        let selDate;
+        if(selectEdDateId === null){
+            setSelectEdDateId(defaultDate);
+            selDate = setValueFromId(monthsList, defaultDate);
+        }else{
+            selDate = setValueFromId(monthsList, selectEdDateId);
+        }
+
         let price = 0;
         allExpanseDetails.map(each=>{
-            price = price + each.price
+            let eveMontName = new Date(each.expenseDate).toLocaleString('default', { month: 'long' });
+
+            if(eveMontName == selDate){
+                price = price + each.price
+            }
         });
         setTotalPrice(price);
 
-        console.log(currentMonth, monthsList)
-
-
-    },[allExpanseDetails]);
+    },[allExpanseDetails, selectEdDateId]);
 
 
     return (
@@ -39,7 +70,7 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                 <div className='chartTopFieldsCon'>
                     <p className="chartTotalPrice">Total Spent : <span>₹{totalPrice}</span></p>
 
-                    <select name="months" className="monthsDropdown" id="months">
+                    <select name="months" onChange={(e)=>setSelectEdDateId(e.target.value)} value={selectEdDateId != null ? selectEdDateId : (monthsList)} className="monthsDropdown" id="months">
                         {monthsList && monthsList.map((each, ind)=>{
                             return(
                                 <option key={ind} value={each.constId}>{each.constName}</option>
@@ -101,6 +132,10 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
 
                             const d = new Date(eachRow.expenseDate);
                             let dateText = d.toLocaleDateString();
+
+                            let everyMontName = new Date(eachRow.expenseDate).toLocaleString('default', { month: 'long' });
+
+                            if(monthIds[everyMontName] == selectEdDateId){
                             return (
                                 <div key={ind} className="chartTableRow">
                                     <p className="chartColumn snoBox">{number}</p>
@@ -108,7 +143,7 @@ const ExpenseChart = ({onValueChange, errorList, onButtonClick, chartType, chart
                                     <p className="chartColumn spentBox">{setValueFromId(ExpenseList, eachRow.categoryId)}</p>
                                     <p className="chartColumn amountBox">₹ {eachRow.price}</p>
                                 </div>
-                            )
+                            )}
                         })}
                       
 
